@@ -6,7 +6,17 @@
     <title>Unity WebGL Player | FootballKicker</title>
   </head>
   <body style="text-align: center; padding: 0; border: 0; margin: 0;">
-    <canvas id="unity-canvas" width=1080 height=1920 style="width: 1080px; height: 1920px; background: #231F20"></canvas>
+    <canvas id="unity-canvas" width=1080 height=1920 style="width: 1080px; height: 1920px; background: #231F20">
+        <style>
+          canvas {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+          }
+      </style>
+    </canvas>
     <script src="Build/Kicker.loader.js"></script>
     <script>
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
@@ -23,6 +33,27 @@
 
         document.body.style.textAlign = "left";
       }
+      function resizeGame() {
+        var gameContainer = document.getElementById("unity-container");
+        var aspectRatio = 9 / 16; // Change the aspect ratio as per your game requirements
+
+        // Calculate the desired width and height based on the window's inner dimensions
+        var windowWidth = window.innerWidth;
+        var windowHeight = windowWidth * aspectRatio;
+
+        if (windowHeight > window.innerHeight) {
+            windowHeight = window.innerHeight;
+            windowWidth = windowHeight / aspectRatio;
+        }
+        
+        // Set the new width and height for the game container
+        gameContainer.style.width = windowWidth + "px";
+        gameContainer.style.height = windowHeight + "px";
+      }
+
+    // Call the resizeGame() function initially and when the window is resized
+    window.addEventListener("resize", resizeGame);
+    resizeGame();
 
       createUnityInstance(document.querySelector("#unity-canvas"), {
         dataUrl: "Build/Kicker.data",
